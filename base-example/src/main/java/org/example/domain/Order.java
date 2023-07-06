@@ -2,12 +2,14 @@ package org.example.domain;
 
 import io.ebean.annotation.Aggregation;
 import io.ebean.annotation.EnumValue;
+import io.ebean.annotation.SoftDelete;
 import org.example.domain.finder.OrderFinder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -62,7 +64,16 @@ public class Order extends BaseModel {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
   List<OrderShipment> shipments = new ArrayList<>();
+  
+  @OneToOne(cascade = CascadeType.REFRESH, mappedBy = "order")
+  Invoice invoice;
 
+  @OneToOne
+  Company company;
+
+  @SoftDelete
+  boolean deleted;
+  
   public Order(Customer customer) {
     this.status = Status.NEW;
     this.customer = customer;
@@ -181,5 +192,41 @@ public class Order extends BaseModel {
 
   public void setTotalCount(Long totalCount) {
     this.totalCount = totalCount;
+  }
+  
+  public boolean getDeleted() {
+    return deleted;
+  }
+  
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+  
+  /**
+   * Return invoice.
+   */
+  public Invoice getInvoice() {
+    return invoice;
+  }
+  
+  /**
+   * Set invoice.
+   */
+  public void setInvoice(Invoice invoice) {
+    this.invoice = invoice;
+  }
+  
+  /**
+   * Return company.
+   */
+  public Company getCompany() {
+    return company;
+  }
+  
+  /**
+   * Set company.
+   */
+  public void setCompany(Company company) {
+    this.company = company;
   }
 }

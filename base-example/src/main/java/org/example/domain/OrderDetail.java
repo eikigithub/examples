@@ -1,5 +1,6 @@
 package org.example.domain;
 
+import io.ebean.annotation.SoftDelete;
 import org.example.domain.finder.OrderDetailFinder;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -25,6 +26,9 @@ public class OrderDetail extends BaseModel {
 
   @ManyToOne
   Product product;
+  
+  @SoftDelete
+  boolean deleted;
 
   public OrderDetail() {
   }
@@ -98,5 +102,12 @@ public class OrderDetail extends BaseModel {
   public void setProduct(Product product) {
     this.product = product;
   }
-
+  
+  public boolean getDeleted() {
+    return deleted;
+  }
+  
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
 }
